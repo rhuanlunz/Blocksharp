@@ -5,24 +5,22 @@ namespace Blockchain.Models;
 public class Chain
 {
     public LinkedList<Block> BlockList = new();
-    public int Difficulty = 1;
-    public const uint MaxCompactTarget = 0x200000f;
+    public int Difficulty;
+    public readonly uint MaxCompactTarget;
     public BigInteger Target;
 
-    public Chain()
+    public Chain(int difficulty = 1, bool regTest = false)
     {
+        MaxCompactTarget = (uint)(regTest ? 0x200000f : 0x1d0ffff);
+        Difficulty = difficulty;
         Target = ConvertCompactToTarget(MaxCompactTarget) / Difficulty;
     }
 
     public bool IsValidBlockHash(byte[] hashValue)
     {
-        BigInteger decimalHashValue = new(hashValue, true, true);
-        if (decimalHashValue <= Target)
-        {
-            return true;
-        }
+        BigInteger decimalHashValue = new(hashValue, isUnsigned: true, isBigEndian: true);
 
-        return false;
+        return decimalHashValue <= Target;
     }
 
     private BigInteger ConvertCompactToTarget(uint nBits)
