@@ -4,24 +4,69 @@ namespace Blockchain.Models;
 
 public class Block
 {
-    public int Id { get; set; }
-    public int Nounce { get; set; }
-    public string? Data { get; set; }
-    public string Hash { get; set; } = string.Empty;
-    public string PreviousHash { get; set; } = string.Empty;
-    public long Timestamp { get; set; } = TimeProvider.System.GetTimestamp();
+    private int _id = 0;
+    private int _nonce = 0;
+    private string? _data;
+    private string _previousHash;
+    private byte[] _hashValue = [];
     
-    public Block(int id, int nounce, string? data, string previousHash)
+    public int Id 
     {
-        Id = id;
-        Nounce = nounce;
-        Data = data;
-        PreviousHash = previousHash;
-        Hash = CryptoWrapper.Sha256Hash($"{id}{nounce}{data}{previousHash}");
+        get => _id;
+        set
+        { 
+            _id = value;
+            CalculateBlockHash();
+        }
+    }
+    public int Nonce 
+    { 
+        get => _nonce; 
+        set
+        {
+            _nonce = value;
+            CalculateBlockHash();
+        }
+
+    }
+    public string? Data 
+    {
+        get => _data; 
+        set
+        {
+            _data = value;
+            CalculateBlockHash();
+        }
+    }
+    public string PreviousHash
+    {
+        get => _previousHash;
+        set
+        {
+            _previousHash = value;
+            CalculateBlockHash();
+        }
+    }
+    public byte[] Hash { get => _hashValue; }
+    public readonly long Timestamp;
+    
+    public Block(int id, int nonce, string? data, string previousHash)
+    {
+        _id = id;
+        _nonce = nonce;
+        _data = data;
+        _previousHash = previousHash;
+        Timestamp = TimeProvider.System.GetTimestamp();
+        CalculateBlockHash();
+    }
+
+    private void CalculateBlockHash()
+    {
+        _hashValue = CryptoWrapper.CalculateSha256($"{Id}{Nonce}{Data}{PreviousHash}{Timestamp}");
     }
 
     public override string ToString()
     {
-        return $"{Id}:{Nounce}:{Data}:{Hash}:{PreviousHash}:{Timestamp}";
+        return $"{Id}:{Nonce}:{Data}:{Hash}:{PreviousHash}:{Timestamp}";
     }
 }
