@@ -5,19 +5,13 @@ namespace Blockchain.Utils;
 
 public class CryptoWrapper
 {
-    public static string Sha256Hash(string input)
+    public static byte[] CalculateSha256(string input)
     {
         ArgumentNullException.ThrowIfNull("The input string cannot be Null!");
 
-        byte[] hashValue;
+        byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+        byte[] hashValue = SHA256.HashData(inputBytes);
 
-        using (SHA256 sha256 = SHA256.Create())
-        {
-            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-            hashValue = sha256.ComputeHash(inputBytes);
-        }
-
-        string hash = Convert.ToHexString(hashValue).ToLower();
-        return hash;
+        return hashValue;
     }
 }
