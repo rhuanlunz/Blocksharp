@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Blockchain.Utils;
+namespace Blockchain.Core.Utils;
 
 public class CryptoWrapper
 {

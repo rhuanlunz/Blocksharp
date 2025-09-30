@@ -1,4 +1,4 @@
-﻿using Blockchain.Utils;
+﻿using Blockchain.Core.Utils;
 
 namespace Blockchain.Models;
 
