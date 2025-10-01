@@ -1,6 +1,6 @@
-﻿using Blockchain.Core.Utils;
+﻿using Blocksharp.Core.Utils;
 
-namespace Blockchain.Models;
+namespace Blocksharp.Core;
 
 public class Block
 {

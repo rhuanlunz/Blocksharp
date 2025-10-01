@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Blockchain.Models;
+namespace Blocksharp.Core;
 
 public class Chain
 {
